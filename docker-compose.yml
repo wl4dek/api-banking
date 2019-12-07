@@ -22,7 +22,7 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_DB: "api_bank_dev"
+      POSTGRES_DB: "api_banking_dev"
       POSTGRES_PASSWORD: "postgres"
     volumes: 
       - ./createExtension.sh:/docker-entrypoint-initdb.d/createExtension.sh
