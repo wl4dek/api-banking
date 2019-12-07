@@ -9,15 +9,15 @@ defmodule ApiBanking.BankAccounts do
   alias ApiBanking.BankAccounts.Account
 
   @doc """
-  Returns the list of agency.
+  Returns the list of accounts.
 
   ## Examples
 
-      iex> list_agency()
+      iex> list_accounts()
       [%Account{}, ...]
 
   """
-  def list_agency do
+  def list_accounts do
     Repo.all(Account)
   end
 

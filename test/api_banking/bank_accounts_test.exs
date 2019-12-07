@@ -3,12 +3,12 @@ defmodule ApiBanking.BankAccountsTest do
 
   alias ApiBanking.BankAccounts
 
-  describe "agency" do
+  describe "accounts" do
     alias ApiBanking.BankAccounts.Account
 
-    @valid_attrs %{account: "some account", balance: "some balance"}
-    @update_attrs %{account: "some updated account", balance: "some updated balance"}
-    @invalid_attrs %{account: nil, balance: nil}
+    @valid_attrs %{account: 42, agency: 42, balance: 120.5}
+    @update_attrs %{account: 43, agency: 43, balance: 456.7}
+    @invalid_attrs %{account: nil, agency: nil, balance: nil}
 
     def account_fixture(attrs \\ %{}) do
       {:ok, account} =
@@ -19,9 +19,9 @@ defmodule ApiBanking.BankAccountsTest do
       account
     end
 
-    test "list_agency/0 returns all agency" do
+    test "list_accounts/0 returns all accounts" do
       account = account_fixture()
-      assert BankAccounts.list_agency() == [account]
+      assert BankAccounts.list_accounts() == [account]
     end
 
     test "get_account!/1 returns the account with given id" do
@@ -31,8 +31,9 @@ defmodule ApiBanking.BankAccountsTest do
 
     test "create_account/1 with valid data creates a account" do
       assert {:ok, %Account{} = account} = BankAccounts.create_account(@valid_attrs)
-      assert account.account == "some account"
-      assert account.balance == "some balance"
+      assert account.account == 42
+      assert account.agency == 42
+      assert account.balance == 120.5
     end
 
     test "create_account/1 with invalid data returns error changeset" do
@@ -42,8 +43,9 @@ defmodule ApiBanking.BankAccountsTest do
     test "update_account/2 with valid data updates the account" do
       account = account_fixture()
       assert {:ok, %Account{} = account} = BankAccounts.update_account(account, @update_attrs)
-      assert account.account == "some updated account"
-      assert account.balance == "some updated balance"
+      assert account.account == 43
+      assert account.agency == 43
+      assert account.balance == 456.7
     end
 
     test "update_account/2 with invalid data returns error changeset" do
