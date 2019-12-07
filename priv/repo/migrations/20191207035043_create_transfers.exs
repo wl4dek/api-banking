@@ -5,8 +5,8 @@ defmodule ApiBanking.Repo.Migrations.CreateTransfers do
     create table(:transfers, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :value, :float
-      add :origin, references(:account, on_delete: :nothing, type: :binary_id)
-      add :destination, references(:account, on_delete: :nothing, type: :binary_id)
+      add :origin, references(:accounts, on_delete: :nothing, type: :binary_id)
+      add :destination, references(:accounts, on_delete: :nothing, type: :binary_id)
 
       timestamps()
     end
