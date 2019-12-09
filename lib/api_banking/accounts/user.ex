@@ -21,14 +21,17 @@ defmodule ApiBanking.Accounts.User do
     |> validate_format(:email, ~r/@/)
     |> update_change(:email, &String.downcase(&1))
     |> unique_constraint(:email)
-    |> hash_password
+    |> put_password
   end
 
-  defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
-    change(changeset, Comeonin.Argon2.add_hash(password))
+  defp put_password(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{password: pass}}
+        ->
+          put_change(changeset, :password, Bcrypt.hash_pwd_salt(pass))
+      _ ->
+          changeset
+    end
   end
 
-  defp hash_password(changeset) do
-    changeset
-  end
 end

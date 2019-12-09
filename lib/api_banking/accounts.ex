@@ -38,6 +38,69 @@ defmodule ApiBanking.Accounts do
   def get_user!(id), do: Repo.get!(User, id)
 
   @doc """
+  Gets a single user by Email.
+
+  Raises `Ecto.NoResultsError` if the User does not exist.
+
+  ## Examples
+
+      iex> get_user_by_email('fulando@email.com')
+      %User{}
+
+      iex> get_user_by_email('xxx@email.com')
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_user_by_email(email) do
+    Repo.one(User, email: String.downcase(email))
+  end
+
+  @doc """
+  validate password user.
+
+  Raises `Ecto.NoResultsError` if the password User does not mach.
+
+  ## Examples
+
+      iex> check_password(user, args)
+      %User{}
+
+      iex> check_password(user, args)
+      ** (Ecto.NoResultsError)
+
+  """
+  def check_password(user, password) do
+    case user do
+      nil ->
+        {:error, "Usuario não encontrado"}
+      _ ->
+        Bcrypt.verify_pass(password, user.password)
+    end
+  end
+
+  @doc """
+  find_and_confirm_password login
+
+  Raises `Ecto.NoResultsError` if the User have access.
+
+  ## Examples
+
+      iex> find_and_confirm_password(args)
+      %User{}
+
+      iex> find_and_confirm_password(args)
+      ** (Ecto.NoResultsError)
+
+  """
+  def find_and_confirm_password(%{"email" => email, "password" => password}) do
+    user = get_user_by_email(email)
+    case check_password(user, password) do
+      true -> {:ok, user}
+      _ -> {:error, "Credencias do login invalidas"}
+    end
+  end
+
+  @doc """
   Creates a user.
 
   ## Examples
