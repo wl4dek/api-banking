@@ -28,7 +28,11 @@ config :phoenix, :json_library, Jason
 # Config Guardian
 config :api_banking, ApiBanking.Guardian,
        issuer: "api_banking",
-       secret_key: "ZG5wplvwS4QI7tZksodUkKca1TO269OtCsKv/cbgoOYYtdtvP6WqI/FwIAjPfg0t"
+       ttl: { 5, :minutes },
+       auth_time: true,
+       max_age: { 5, :minutes },
+       secret_key: "ZG5wplvwS4QI7tZksodUkKca1TO269OtCsKv/cbgoOYYtdtvP6WqI/FwIAjPfg0t",
+       error_handler: ApiBanking.Guardian.AuthErrorHandler
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

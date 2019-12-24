@@ -1,9 +1,8 @@
 defmodule ApiBankingWeb.UserController do
   use ApiBankingWeb, :controller
 
-  alias ApiBanking.Accounts
+  alias ApiBanking.{Accounts, Guardian}
   alias ApiBanking.Accounts.User
-  alias ApiBanking.Guardian
 
   action_fallback ApiBankingWeb.FallbackController
 
@@ -47,17 +46,30 @@ defmodule ApiBankingWeb.UserController do
       {:ok, user} ->
         new_conn = Guardian.Plug.sign_in(conn, user)
         token = Guardian.Plug.current_token(new_conn)
-        # claims = Guardian.Plug.current_claims(new_conn)
-        # exp = Map.get(claims, "exp")
+        claims = Guardian.Plug.current_claims(new_conn)
+        exp = Map.get(claims, "exp")
 
         new_conn
          |> put_resp_header("authorization", "Bearer #{token}")
         #  |> put_resp_header("x-expires", exp)
-         |> render("login.json", token: token)
+         |> render("login.json", user: user, token: token, exp: exp)
       {:error, _} ->
         conn
         |> put_status(401)
         |> render("error.json", message: "Could not login")
+    end
+  end
+
+  def logout(conn, _) do
+    jwt = Guardian.Plug.current_token(conn)
+    # claims = Guardian.Plug.current_claims(conn)
+    case Guardian.revoke(jwt) do
+      {:ok, _} ->
+        conn
+        |> render("message.json", message: "Logout")
+      {:error, _} ->
+        conn
+        |> render("message.json", message: "Logout não realizado")
     end
   end
 

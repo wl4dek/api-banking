@@ -18,9 +18,17 @@ defmodule ApiBankingWeb.UserView do
     }
   end
 
-  def render("login.json", %{token: token}) do
+  def render("login.json", %{user: user, token: token, exp: exp}) do
     %{
-      token: token
+      user: render_one(user, UserView, "user.json"),
+      token: token,
+      exp: exp
+    }
+  end
+
+  def render("message.json", %{message: message}) do
+    %{
+      message: message
     }
   end
 end

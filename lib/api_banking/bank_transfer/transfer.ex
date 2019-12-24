@@ -17,5 +17,24 @@ defmodule ApiBanking.BankTransfer.Transfer do
     transfer
     |> cast(attrs, [:value])
     |> validate_required([:value])
+    |> validate_number(:value, greater_than: 0)
+    |> validate_transfer
   end
+
+
+  defp validate_transfer(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{value: val}}
+        ->
+          case ApiBanking.BankAccounts.get_account!(:origin) do
+            account ->
+              case account.balance < val do
+                true -> add_error(changeset, :value, "is not a value valid")
+              end
+          end
+      _ ->
+          changeset
+    end
+  end
+
 end
