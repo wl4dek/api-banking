@@ -38,6 +38,21 @@ defmodule ApiBanking.BankTransfer do
   def get_transfer!(id), do: Repo.get!(Transfer, id)
 
   @doc """
+  Returns the list of transfers by account id.
+
+  Raises `Ecto.NoResultsError` if the Transfer does not exist.
+
+  ## Examples
+
+      iex> get_transfer_by_id_account(123)
+      [%Transfer{}, ...]
+
+  """
+  def get_transfer_by_id_account(id_account) do
+    Repo.all(from t in "tranfers", where: t.origin == ^id_account || t.destination == ^id_account)
+  end
+
+  @doc """
   Creates a transfer.
 
   ## Examples

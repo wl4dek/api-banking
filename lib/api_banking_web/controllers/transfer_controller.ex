@@ -29,8 +29,8 @@ defmodule ApiBankingWeb.TransferController do
     BankAccounts.update_account(destino, %{balance: destino.balance + value_transfer})
   end
 
-  def show(conn, %{"id" => id}) do
-    transfer = BankTransfer.get_transfer!(id)
+  def show(conn, %{"idAccount" => id_account}) do
+    transfer = BankTransfer.get_transfer_by_id_account(id_account)
     render(conn, "show.json", transfer: transfer)
   end
 
