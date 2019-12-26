@@ -52,7 +52,7 @@ defmodule ApiBanking.Accounts do
 
   """
   def get_user_by_email(email) do
-    Repo.one(User, email: String.downcase(email))
+    Repo.one(from u in User, where: u.email == ^String.downcase(email))
   end
 
   @doc """
