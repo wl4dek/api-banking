@@ -16,7 +16,8 @@ defmodule ApiBanking.BankAccounts.Account do
   @doc false
   def changeset(account, attrs) do
     account
-    |> cast(attrs, [:agency, :account, :balance])
-    |> validate_required([:agency, :account, :balance])
+    |> cast(attrs, [:agency, :account, :balance, :user_id])
+    |> validate_required([:agency, :account, :balance, :user_id])
+    |> validate_number(:balance, greater_than_or_equal_to: 0)
   end
 end

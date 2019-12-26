@@ -17,7 +17,7 @@ defmodule ApiBanking.BankTransfer.Transfer do
     transfer
     |> cast(attrs, [:value])
     |> validate_required([:value])
-    |> validate_number(:value, greater_than: 0)
+    |> validate_number(:value, greater_than_or_equal_to: 0)
     |> validate_transfer
   end
 
