@@ -49,7 +49,7 @@ defmodule ApiBanking.BankTransfer do
 
   """
   def get_transfer_by_id_account(id_account) do
-    Repo.all(from t in "tranfers", where: t.origin == ^id_account || t.destination == ^id_account)
+    Repo.all(from t in Transfer, where: t.origin == ^id_account or t.destination == ^id_account)
   end
 
   @doc """
