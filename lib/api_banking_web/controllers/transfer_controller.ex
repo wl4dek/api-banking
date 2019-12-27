@@ -29,24 +29,8 @@ defmodule ApiBankingWeb.TransferController do
     BankAccounts.update_account(destino, %{balance: destino.balance + value_transfer})
   end
 
-  def show(conn, %{"idAccount" => id_account}) do
-    transfer = BankTransfer.get_transfer_by_id_account(id_account)
-    render(conn, "show.json", transfer: transfer)
+  def show(conn, %{"id" => id_account}) do
+    transfers = BankTransfer.get_transfer_by_id_account(id_account)
+    render(conn, "index.json", transfers: transfers)
   end
-
-  # def update(conn, %{"id" => id, "transfer" => transfer_params}) do
-  #   transfer = BankTransfer.get_transfer!(id)
-
-  #   with {:ok, %Transfer{} = transfer} <- BankTransfer.update_transfer(transfer, transfer_params) do
-  #     render(conn, "show.json", transfer: transfer)
-  #   end
-  # end
-
-  # def delete(conn, %{"id" => id}) do
-  #   transfer = BankTransfer.get_transfer!(id)
-
-  #   with {:ok, %Transfer{}} <- BankTransfer.delete_transfer(transfer) do
-  #     send_resp(conn, :no_content, "")
-  #   end
-  # end
 end

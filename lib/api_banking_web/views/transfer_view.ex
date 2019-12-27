@@ -11,7 +11,11 @@ defmodule ApiBankingWeb.TransferView do
   end
 
   def render("transfer.json", %{transfer: transfer}) do
-    %{id: transfer.id,
-      value: transfer.value}
+    %{
+      id: transfer.id,
+      origin: transfer.origin,
+      destination: transfer.destination,
+      value: transfer.value
+    }
   end
 end
