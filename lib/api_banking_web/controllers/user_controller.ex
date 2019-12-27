@@ -12,11 +12,15 @@ defmodule ApiBankingWeb.UserController do
   end
 
   def create(conn, %{"user" => user_params}) do
-    with {:ok, %User{} = user} <- Accounts.create_user(user_params) do
-      conn
-      |> put_status(:created)
-      # |> put_resp_header("location", Routes.user_path(conn, :show, user))
-      |> render("show.json", user: user)
+    case Accounts.create_user(user_params) do
+      {:ok, %User{} = user} ->
+        conn
+        |> put_status(:created)
+        |> render("show.json", user: user)
+      {:error, changeset} ->
+        conn
+        |> put_status(422)
+        |> render("error.json", changeset: changeset)
     end
   end
 
@@ -28,8 +32,14 @@ defmodule ApiBankingWeb.UserController do
   def update(conn, %{"id" => id, "user" => user_params}) do
     user = Accounts.get_user!(id)
 
-    with {:ok, %User{} = user} <- Accounts.update_user(user, user_params) do
-      render(conn, "show.json", user: user)
+    case Accounts.update_user(user, user_params) do
+      {:ok, %User{} = user} ->
+        conn
+        |> render("show.json", user: user)
+      {:error, changeset} ->
+        conn
+        |> put_status(422)
+        |> render("error.json", changeset: changeset)
     end
   end
 
