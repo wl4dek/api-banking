@@ -36,6 +36,33 @@ defmodule ApiBankingWeb.Router do
       info: %{
         version: "1.0",
         title: "Api Banking"
+      },
+      definitions: %{
+        "Users" => %{
+          email: "string",
+          name: "string",
+          password: "string"
+        },
+        "UserList" => %{
+          data: [
+            %{
+              email: "string",
+              name: "string",
+              password: "string"
+            }
+          ]
+        },
+        "Accounts" => %{
+          account: "number",
+          agency: "number",
+          balance: "float",
+          user_id: "uuid"
+        },
+        "Transfer" => %{
+          value: "float",
+          origin: "uuid",
+          destination: "uuid"
+        }
       }
     }
   end

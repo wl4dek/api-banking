@@ -14,7 +14,7 @@ defmodule ApiBankingWeb.UserController do
     description "Lista todos os usuário"
     produces "application/json"
     tag "Users"
-    response 200, "OK", Schema.ref(:User)
+    response 200, "OK", Schema.ref(:UserList)
     response 401, "Unauthorized"
   end
 
