@@ -34,4 +34,44 @@ defmodule ApiBankingWeb.Router do
       get "/transacionado/year", TransacionadoController, :transacionado_by_year
     end
   end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "Api Banking"
+      },
+      definitions: %{
+        "Users" => %{
+          email: "string",
+          name: "string",
+          password: "string"
+        },
+        "UserList" => %{
+          data: [
+            %{
+              email: "string",
+              name: "string",
+              password: "string"
+            }
+          ]
+        },
+        "Accounts" => %{
+          account: "number",
+          agency: "number",
+          balance: "float",
+          user_id: "uuid"
+        },
+        "Transfer" => %{
+          value: "float",
+          origin: "uuid",
+          destination: "uuid"
+        }
+      }
+    }
+  end
+
+  scope "/" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :api_banking, swagger_file: "swagger.json"
+  end
 end

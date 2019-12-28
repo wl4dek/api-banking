@@ -1,5 +1,6 @@
 defmodule ApiBankingWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :api_banking
+  plug CORSPlug
 
   socket "/socket", ApiBankingWeb.UserSocket,
     websocket: true,
