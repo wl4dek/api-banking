@@ -28,6 +28,58 @@ defmodule ApiBankingWeb.Router do
       resources "/user", UserController, only: [:index, :show, :delete, :update]
       resources "/account", AccountController, only: [:index, :create, :show, :delete, :update]
       resources "/transfer", TransferController, only: [:index, :create, :show]
+      resources "/withdraw", SaqueController, only: [:create, :show]
+      get "/transacionado/day", TransacionadoController, :transacionado_by_day
+      get "/transacionado/month", TransacionadoController, :transacionado_by_month
+      get "/transacionado/year", TransacionadoController, :transacionado_by_year
     end
+  end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "Api Banking"
+      },
+      definitions: %{
+        "Users" => %{
+          email: "string",
+          name: "string",
+          password: "string"
+        },
+        "UserList" => %{
+          data: [
+            %{
+              email: "string",
+              name: "string",
+              password: "string"
+            }
+          ]
+        },
+        "Transacionados" => %{
+          tranferencias: Transfer,
+          saques: Saques
+        },
+        "Saques" => %{
+          value: "float",
+          origin: "uuid"
+        },
+        "Accounts" => %{
+          account: "number",
+          agency: "number",
+          balance: "float",
+          user_id: "uuid"
+        },
+        "Transfer" => %{
+          value: "float",
+          origin: "uuid",
+          destination: "uuid"
+        }
+      }
+    }
+  end
+
+  scope "/" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :api_banking, swagger_file: "swagger.json"
   end
 end

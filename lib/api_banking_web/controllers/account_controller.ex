@@ -1,5 +1,6 @@
 defmodule ApiBankingWeb.AccountController do
   use ApiBankingWeb, :controller
+  use PhoenixSwagger
 
   alias ApiBanking.BankAccounts
   alias ApiBanking.BankAccounts.Account
@@ -11,6 +12,20 @@ defmodule ApiBankingWeb.AccountController do
     render(conn, "index.json", accounts: accounts)
   end
 
+  swagger_path :create do
+    post "/api/v1/account"
+    parameter :account, :path, :string, "Número da Conta do usuário", required: true
+    parameter :agency, :path, :string, "Número da Agencia do usuário", required: true
+    parameter :balance, :path, :string, "Saldo da conta do usuário", required: true
+    parameter :user_id, :path, :string, "Id do usuário", required: true
+    summary "Criando Conta"
+    description "Criando a conta do banco do usuário"
+    produces "application/json"
+    tag "Accounts"
+    response 200, "OK", Schema.ref(:Accounts)
+    response 401, "Unauthorized"
+  end
+
   def create(conn, %{"account" => account_params}) do
     with {:ok, %Account{} = account} <- BankAccounts.create_account(account_params) do
       conn
@@ -20,9 +35,35 @@ defmodule ApiBankingWeb.AccountController do
     end
   end
 
+  swagger_path :show do
+    get "/api/v1/account/{id}"
+    parameter :id, :path, :string, "UUID da Conta do usuário", required: true
+    summary "Show Conta"
+    description "Recuperando a conta do banco de um usuário"
+    produces "application/json"
+    tag "Accounts"
+    response 200, "OK", Schema.ref(:Accounts)
+    response 401, "Unauthorized"
+  end
+
   def show(conn, %{"id" => id}) do
     account = BankAccounts.get_account!(id)
     render(conn, "show.json", account: account)
+  end
+
+  swagger_path :update do
+    put "/api/v1/account"
+    parameter :id, :path, :string, "UUID da Conta do usuário", required: true
+    parameter :account, :path, :string, "Número da Conta do usuário", required: true
+    parameter :agency, :path, :string, "Número da Agencia do usuário", required: true
+    parameter :balance, :path, :string, "Saldo da conta do usuário", required: true
+    parameter :user_id, :path, :string, "Id do usuário", required: true
+    summary "Update Conta"
+    description "Update da conta do banco de um usuário"
+    produces "application/json"
+    tag "Accounts"
+    response 200, "OK", Schema.ref(:Accounts)
+    response 401, "Unauthorized"
   end
 
   def update(conn, %{"id" => id, "account" => account_params}) do

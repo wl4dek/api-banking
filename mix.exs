@@ -7,7 +7,7 @@ defmodule ApiBanking.MixProject do
       version: "0.1.0",
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: [:phoenix, :gettext] ++ Mix.compilers(),
+      compilers: [:phoenix, :gettext] ++ Mix.compilers() ++ [:phoenix_swagger],
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps()
@@ -44,7 +44,9 @@ defmodule ApiBanking.MixProject do
       {:comeonin, "~> 5.1"},
       {:bcrypt_elixir, "~> 2.0"},
       {:guardian, "~> 2.0"},
-      {:guardian_db, "~> 2.0"}
+      {:guardian_db, "~> 2.0"},
+      {:phoenix_swagger, "~> 0.8.2"},
+      {:cors_plug, "~> 1.4"}
     ]
   end
 
@@ -59,6 +61,7 @@ defmodule ApiBanking.MixProject do
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
+      # "swagger": ["phx.swagger.generate priv/static/swagger.json --router ApiBanking.Router --endpoint ApiBanking.Endpoint"]
     ]
   end
 end

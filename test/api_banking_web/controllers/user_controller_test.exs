@@ -5,16 +5,16 @@ defmodule ApiBankingWeb.UserControllerTest do
   alias ApiBanking.Accounts.User
 
   @create_attrs %{
-    email: "some email",
+    email: "some@email.com",
     name: "some name",
     password: "some password"
   }
   @update_attrs %{
-    email: "some updated email",
+    email: "some@updated.email.",
     name: "some updated name",
     password: "some updated password"
   }
-  @invalid_attrs %{email: nil, name: nil, password: nil}
+  @invalid_attrs %{email: "some email", name: nil, password: nil}
 
   def fixture(:user) do
     {:ok, user} = Accounts.create_user(@create_attrs)
@@ -41,9 +41,8 @@ defmodule ApiBankingWeb.UserControllerTest do
 
       assert %{
                "id" => id,
-               "email" => "some email",
                "name" => "some name",
-               "password" => "some password"
+               "email" => "some@email.com"
              } = json_response(conn, 200)["data"]
     end
 
@@ -64,9 +63,8 @@ defmodule ApiBankingWeb.UserControllerTest do
 
       assert %{
                "id" => id,
-               "email" => "some updated email",
                "name" => "some updated name",
-               "password" => "some updated password"
+               "email" => "some@updated.email.com"
              } = json_response(conn, 200)["data"]
     end
 
