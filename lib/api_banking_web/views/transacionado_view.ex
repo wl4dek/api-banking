@@ -1,6 +1,5 @@
 defmodule ApiBankingWeb.TransacionadoView do
   use ApiBankingWeb, :view
-  alias ApiBankingWeb.TransacionadoView
   alias ApiBankingWeb.SaqueView
   alias ApiBankingWeb.TransferView
 
