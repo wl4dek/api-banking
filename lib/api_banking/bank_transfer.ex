@@ -53,6 +53,58 @@ defmodule ApiBanking.BankTransfer do
   end
 
   @doc """
+  Returns the list of transfers by day.
+
+  Raises `Ecto.NoResultsError` if the Transfer does not exist.
+
+  ## Examples
+
+      iex> get_transfer_by_day(12)
+      [%Transfer{}, ...]
+
+  """
+  def get_transfer_by_day(day, id_account) do
+    now = Date.utc_today()
+    case day > 0 and day <= now.calendar.days_in_month() do
+      true -> Repo.all(from t in Transfer, where: (t.destination == ^id_account  or t.origin == ^id_account) and fragment("Extract(day from ?)", t.inserted_at) == ^day )
+      false -> {:error, "Valor do dia invalido"}
+    end
+  end
+
+  @doc """
+  Returns the list of transfers by month.
+
+  Raises `Ecto.NoResultsError` if the Transfer does not exist.
+
+  ## Examples
+
+      iex> get_transfer_by_month(12)
+      [%Transfer{}, ...]
+
+  """
+  def get_transfer_by_month(month, id_account) do
+    case month > 0 and month <= 12 do
+      true -> Repo.all(from t in Transfer, where: (t.destination == ^id_account  or t.origin == ^id_account) and fragment("Extract(month from ?)", t.inserted_at) == ^month)
+      false -> {:error, "Valor do mes invalido"}
+    end
+  end
+
+  @doc """
+  Returns the list of transfers by year.
+
+  Raises `Ecto.NoResultsError` if the Transfer does not exist.
+
+  ## Examples
+
+      iex> get_transfer_by_year(2012)
+      [%Transfer{}, ...]
+
+  """
+  def get_transfer_by_year(year, id_account) do
+    Repo.all(from t in Transfer, where: (t.destination == ^id_account  or t.origin == ^id_account) and fragment("Extract(year from ?)", t.inserted_at) == ^year )
+  end
+
+  @doc """
   Creates a transfer.
 
   ## Examples

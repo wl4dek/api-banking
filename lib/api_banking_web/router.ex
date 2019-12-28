@@ -28,6 +28,10 @@ defmodule ApiBankingWeb.Router do
       resources "/user", UserController, only: [:index, :show, :delete, :update]
       resources "/account", AccountController, only: [:index, :create, :show, :delete, :update]
       resources "/transfer", TransferController, only: [:index, :create, :show]
+      resources "/withdraw", SaqueController, only: [:create, :show]
+      get "/transacionado/day", TransacionadoController, :transacionado_by_day
+      get "/transacionado/month", TransacionadoController, :transacionado_by_month
+      get "/transacionado/year", TransacionadoController, :transacionado_by_year
     end
   end
 end
