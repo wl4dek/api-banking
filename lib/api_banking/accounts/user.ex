@@ -20,7 +20,7 @@ defmodule ApiBanking.Accounts.User do
     |> validate_length(:name, min: 3)
     |> validate_format(:email, ~r/@/)
     |> update_change(:email, &String.downcase(&1))
-    |> unique_constraint(:email)
+    |> unique_constraint(:email, name: :users_email_company_id_index)
     |> put_password
   end
 
