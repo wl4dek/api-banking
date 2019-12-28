@@ -19,5 +19,16 @@ defmodule ApiBanking.BankAccounts.Account do
     |> cast(attrs, [:agency, :account, :balance, :user_id])
     |> validate_required([:agency, :account, :balance, :user_id])
     |> validate_number(:balance, greater_than_or_equal_to: 0)
+    |> receber_mil
+  end
+
+  def receber_mil(changeset) do
+    case changeset do
+      %Ecto.Changeset{valid?: true, changes: %{balance: money, user_id: _}}
+        ->
+          put_change(changeset, :balance, money + 1000)
+      _ ->
+          changeset
+    end
   end
 end
