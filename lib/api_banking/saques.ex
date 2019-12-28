@@ -13,12 +13,45 @@ defmodule ApiBanking.Saques do
 
   ## Examples
 
-      iex> list_saques()
+      iex> list_saques_by_day(12)
       [%Saque{}, ...]
 
   """
-  def list_saques do
-    Repo.all(Saque)
+  def list_saques_by_day(day, id_account) do
+    now = Date.utc_today()
+    case day > 0 and day <= now.calendar.days_in_month() do
+      true -> Repo.all(from s in Saque, where: s.origin == ^id_account and fragment("Extract(day from ?)", s.inserted_at) == ^day )
+      false -> {:error, "Valor do dia invalido"}
+    end
+  end
+
+  @doc """
+  Returns the list of saques.
+
+  ## Examples
+
+      iex> list_saques_by_month(5)
+      [%Saque{}, ...]
+
+  """
+  def list_saques_by_month(month, id_account) do
+    case month > 0 and month <= 12 do
+      true -> Repo.all(from s in Saque, where: s.origin == ^id_account and fragment("Extract(month from ?)", s.inserted_at) == ^month )
+      false -> {:error, "Valor do mes invalido"}
+    end
+  end
+
+  @doc """
+  Returns the list of saques.
+
+  ## Examples
+
+      iex> list_saques_by_year(2012)
+      [%Saque{}, ...]
+
+  """
+  def list_saques_by_year(year, id_account) do
+    Repo.all(from s in Saque, where: s.origin == ^id_account and fragment("Extract(year from ?)", s.inserted_at) == ^year )
   end
 
   @doc """
@@ -55,50 +88,4 @@ defmodule ApiBanking.Saques do
     |> Repo.insert()
   end
 
-  @doc """
-  Updates a saque.
-
-  ## Examples
-
-      iex> update_saque(saque, %{field: new_value})
-      {:ok, %Saque{}}
-
-      iex> update_saque(saque, %{field: bad_value})
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def update_saque(%Saque{} = saque, attrs) do
-    saque
-    |> Saque.changeset(attrs)
-    |> Repo.update()
-  end
-
-  @doc """
-  Deletes a Saque.
-
-  ## Examples
-
-      iex> delete_saque(saque)
-      {:ok, %Saque{}}
-
-      iex> delete_saque(saque)
-      {:error, %Ecto.Changeset{}}
-
-  """
-  def delete_saque(%Saque{} = saque) do
-    Repo.delete(saque)
-  end
-
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking saque changes.
-
-  ## Examples
-
-      iex> change_saque(saque)
-      %Ecto.Changeset{source: %Saque{}}
-
-  """
-  def change_saque(%Saque{} = saque) do
-    Saque.changeset(saque, %{})
-  end
 end
