@@ -1,6 +1,7 @@
 defmodule ApiBankingWeb.UserView do
   use ApiBankingWeb, :view
   alias ApiBankingWeb.UserView
+  alias ApiBankingWeb.ChangesetView
 
   def render("index.json", %{users: users}) do
     %{data: render_many(users, UserView, "user.json")}
@@ -30,5 +31,9 @@ defmodule ApiBankingWeb.UserView do
     %{
       message: message
     }
+  end
+
+  def render("error.json", %{changeset: changeset}) do
+    ChangesetView.render("error.json", changeset: changeset)
   end
 end
