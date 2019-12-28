@@ -3,7 +3,7 @@ defmodule ApiBankingWeb.Endpoint do
   plug CORSPlug
 
   socket "/socket", ApiBankingWeb.UserSocket,
-    websocket: true,
+    websocket: [timeout: 45_000],
     longpoll: false
 
   # Serve at "/" the static files from "priv/static" directory.
