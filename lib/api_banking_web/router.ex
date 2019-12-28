@@ -56,6 +56,14 @@ defmodule ApiBankingWeb.Router do
             }
           ]
         },
+        "Transacionados" => %{
+          tranferencias: Transfer,
+          saques: Saques
+        },
+        "Saques" => %{
+          value: "float",
+          origin: "uuid"
+        },
         "Accounts" => %{
           account: "number",
           agency: "number",
