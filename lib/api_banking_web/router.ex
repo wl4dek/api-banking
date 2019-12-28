@@ -30,4 +30,17 @@ defmodule ApiBankingWeb.Router do
       resources "/transfer", TransferController, only: [:index, :create, :show]
     end
   end
+
+  def swagger_info do
+    %{
+      info: %{
+        version: "1.0",
+        title: "Api Banking"
+      }
+    }
+  end
+
+  scope "/" do
+    forward "/", PhoenixSwagger.Plug.SwaggerUI, otp_app: :api_banking, swagger_file: "swagger.json"
+  end
 end
