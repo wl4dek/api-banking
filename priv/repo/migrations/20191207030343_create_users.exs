@@ -11,5 +11,7 @@ defmodule ApiBanking.Repo.Migrations.CreateUsers do
       timestamps()
     end
 
+    create unique_index(:users, [:email, :id], name: :users_email_company_id_index)
+
   end
 end
